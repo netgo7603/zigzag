@@ -1,3 +1,0 @@
-User-agent: *
-Allow: /
-Sitemap: https://zigzag.lymin80.shop/sitemap.xml
