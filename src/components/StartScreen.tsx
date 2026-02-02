@@ -59,7 +59,7 @@ export function StartScreen({ onStart }: StartScreenProps) {
                 ZigZag
               </span>
             </h1>
-            <p className="text-[#8b949e] text-xl font-medium tracking-wide"><br>지렁이 서바이벌</br></p>
+            <p className="text-[#8b949e] text-xl font-medium tracking-wide">지렁이 서바이벌</p>
           </div>
 
           {/* 프로필 & 닉네임 입력 폼 */}
