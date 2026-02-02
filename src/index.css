@@ -1,0 +1,65 @@
+@import "tailwindcss";
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background-color: #0f172a;
+}
+
+/* 커스텀 애니메이션 */
+@keyframes fade-in {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.animate-fade-in {
+  animation: fade-in 0.3s ease-out;
+}
+
+/* 스크롤바 숨기기 */
+::-webkit-scrollbar {
+  display: none;
+}
+
+/* 터치 하이라이트 제거 (모바일) */
+* {
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* 선택 방지 (게임 캔버스) */
+canvas {
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: none;
+}
+
+/* 모바일 Safe Area (노치 대응) */
+.safe-area-top {
+  padding-top: env(safe-area-inset-top, 0px);
+}
+
+.safe-area-bottom {
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+/* 모바일 최적화 */
+@media (max-width: 640px) {
+  body {
+    font-size: 14px;
+  }
+}
