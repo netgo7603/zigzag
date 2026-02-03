@@ -431,11 +431,16 @@ export class Renderer {
     this.ctx.font = '14px Arial';
     this.ctx.fillText(`길이: ${state.snake.segments.length}`, 25, 70);
 
-    // 조작 안내
+    // 조작 안내 및 좌표 표시
     this.ctx.fillStyle = 'rgba(255, 255, 255, 0.5)';
     this.ctx.font = '12px Arial';
     this.ctx.textAlign = 'left';
-    this.ctx.fillText('ESC: 일시정지  |  SPACE: 부스터', 15, height - 15);
+
+    const head = getSnakeHead(state.snake);
+    const posText = `POS: ${Math.round(head.x)}, ${Math.round(head.y)}`;
+    const controlText = 'ESC: 일시정지  |  SPACE: 부스터';
+
+    this.ctx.fillText(`${controlText}    |    ${posText}`, 15, height - 15);
 
     // 미니맵
     this.drawMinimap(state, width);

@@ -19,6 +19,7 @@ export function GameCanvas() {
   const [currentScore, setCurrentScore] = useState(0);
   const [currentLength, setCurrentLength] = useState(0);
   const [currentRemainingTime, setCurrentRemainingTime] = useState(120);
+  const [currentPos, setCurrentPos] = useState({ x: 0, y: 0 });
   const [isMobile, setIsMobile] = useState(false);
   const [isPaused, setIsPaused] = useState(false);
 
@@ -52,6 +53,14 @@ export function GameCanvas() {
       setCurrentScore(state.snake.score);
       setCurrentLength(state.snake.segments.length);
       setCurrentRemainingTime(Math.ceil(state.timeLeft));
+
+      // 현재 좌표 갱신 (반올림)
+      if (state.snake.segments.length > 0) {
+        setCurrentPos({
+          x: Math.round(state.snake.segments[0].x),
+          y: Math.round(state.snake.segments[0].y)
+        });
+      }
 
       if (state.gameOver && screen !== 'gameover') {
         setFinalScore(state.snake.score);
@@ -211,10 +220,20 @@ export function GameCanvas() {
           </div>
 
           {/* 중앙 타이머 (모바일 전용) */}
-          <div className="absolute top-20 left-1/2 -translate-x-1/2 px-6 py-2 rounded-full bg-black/40 backdrop-blur-sm border border-white/10">
-            <span className={`text-2xl font-black ${currentRemainingTime <= 10 ? 'text-red-500 animate-pulse' : 'text-yellow-400'}`}>
-              {Math.floor(currentRemainingTime / 60)}:{String(currentRemainingTime % 60).padStart(2, '0')}
-            </span>
+          <div className="absolute top-20 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1">
+            <div className="px-6 py-2 rounded-full bg-black/40 backdrop-blur-sm border border-white/10">
+              <span className={`text-2xl font-black ${currentRemainingTime <= 10 ? 'text-red-500 animate-pulse' : 'text-yellow-400'}`}>
+                {Math.floor(currentRemainingTime / 60)}:{String(currentRemainingTime % 60).padStart(2, '0')}
+              </span>
+            </div>
+
+            {/* 현재 좌표 표시 */}
+            <div className="px-3 py-1 rounded-lg bg-black/30 backdrop-blur-[2px] border border-white/5 flex items-center gap-2">
+              <span className="text-[10px] font-bold text-white/40 uppercase tracking-tighter">POS</span>
+              <span className="text-xs font-mono font-medium text-cyan-400/80">
+                {currentPos.x}, {currentPos.y}
+              </span>
+            </div>
           </div>
         </div>
       )}
