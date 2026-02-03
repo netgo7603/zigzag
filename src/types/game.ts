@@ -7,6 +7,8 @@ export interface Segment extends Point {
   radius: number;
 }
 
+export type FoodType = 'normal' | 'time';
+
 export interface Food {
   id: string;
   x: number;
@@ -14,6 +16,7 @@ export interface Food {
   radius: number;
   color: string;
   value: number;
+  type: FoodType;
 }
 
 export interface Bomb {
@@ -75,6 +78,7 @@ export interface GameState {
   maxPauseCount: number;
   worldWidth: number;
   worldHeight: number;
+  timeLeft: number;
 }
 
 export type GameScreen = 'start' | 'playing' | 'gameover' | 'paused';

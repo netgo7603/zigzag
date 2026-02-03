@@ -25,8 +25,8 @@ export function StartScreen({ onStart }: StartScreenProps) {
       return;
     }
 
-    if (file.size > 2 * 1024 * 1024) {
-      alert('파일 크기는 2MB 이하여야 합니다.');
+    if (file.size > 4 * 1024 * 1024) {
+      alert('파일 크기는 4MB 이하여야 합니다.');
       return;
     }
 
@@ -39,9 +39,12 @@ export function StartScreen({ onStart }: StartScreenProps) {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    const name = playerName.trim() || '플레이어';
+    const name = playerName.trim();
+    if (!name) return;
     onStart(name, profileImage);
   };
+
+  const isNameValid = playerName.trim().length > 0;
 
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-[#030712] overflow-hidden">
@@ -118,7 +121,7 @@ export function StartScreen({ onStart }: StartScreenProps) {
               </div>
 
               {/* 닉네임 입력 */}
-              <div className="relative group">
+              <div className="relative group mb-2">
                 <div className="absolute -inset-0.5 bg-gradient-to-r from-cyan-500/50 to-violet-500/50 rounded-2xl opacity-0 group-focus-within:opacity-100 blur transition-all duration-300" />
                 <input
                   type="text"
@@ -126,19 +129,28 @@ export function StartScreen({ onStart }: StartScreenProps) {
                   onChange={(e) => setPlayerName(e.target.value)}
                   placeholder="닉네임을 입력하세요"
                   maxLength={15}
-                  className="relative w-full px-5 py-4 rounded-xl bg-white/5 border border-white/10
+                  required
+                  className={`relative w-full px-5 py-4 rounded-xl bg-white/5 border
                            text-white placeholder-white/25 text-center text-lg font-medium
-                           focus:outline-none focus:border-white/20 focus:bg-white/[0.07]
-                           transition-all duration-300"
+                           focus:outline-none focus:bg-white/[0.07]
+                           transition-all duration-300
+                           ${isNameValid ? 'border-white/10 focus:border-white/20' : 'border-white/10 focus:border-cyan-500/50'}`}
                 />
               </div>
+
+              {/* 닉네임 안내 메시지 */}
+              <p className={`text-center text-sm mb-4 transition-colors ${isNameValid ? 'text-emerald-400' : 'text-white/40'}`}>
+                {isNameValid ? '✓ 멋진 닉네임이에요!' : '닉네임을 입력해주세요'}
+              </p>
 
               {/* 시작 버튼 */}
               <button
                 type="submit"
-                className="group relative w-full py-4 rounded-xl overflow-hidden transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]"
+                disabled={!isNameValid}
+                className={`group relative w-full py-4 rounded-xl overflow-hidden transition-all duration-300
+                          ${isNameValid ? 'hover:scale-[1.02] active:scale-[0.98]' : 'opacity-50 cursor-not-allowed'}`}
               >
-                <div className="absolute inset-0 bg-gradient-to-r from-cyan-500 via-violet-500 to-fuchsia-500" />
+                <div className={`absolute inset-0 bg-gradient-to-r ${isNameValid ? 'from-cyan-500 via-violet-500 to-fuchsia-500' : 'from-gray-500 via-gray-600 to-gray-500'}`} />
                 <div className="absolute inset-0 bg-gradient-to-r from-cyan-400 via-violet-400 to-fuchsia-400 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                 <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_-20%,rgba(255,255,255,0.3),transparent_70%)]" />
                 <span className="relative text-white font-bold text-lg tracking-wide flex items-center justify-center gap-2">
@@ -178,7 +190,7 @@ export function StartScreen({ onStart }: StartScreenProps) {
                     <div className="flex items-center gap-3 p-3 rounded-xl bg-white/[0.03] border border-white/5">
                       <div className="w-8 h-8 rounded-lg bg-cyan-500/10 flex items-center justify-center">
                         <svg className="w-4 h-4 text-cyan-400" fill="currentColor" viewBox="0 0 24 24">
-                          <path d="M13.5 3C9.916 3 7 5.916 7 9.5c0 1.54.565 2.944 1.487 4.046l-.017.017-4.363 4.363a.5.5 0 00.707.707l4.363-4.363.017-.017A6.465 6.465 0 0013.5 16c3.584 0 6.5-2.916 6.5-6.5S17.084 3 13.5 3z"/>
+                          <path d="M13.5 3C9.916 3 7 5.916 7 9.5c0 1.54.565 2.944 1.487 4.046l-.017.017-4.363 4.363a.5.5 0 00.707.707l4.363-4.363.017-.017A6.465 6.465 0 0013.5 16c3.584 0 6.5-2.916 6.5-6.5S17.084 3 13.5 3z" />
                         </svg>
                       </div>
                       <span className="text-white/40 text-xs">마우스 이동</span>

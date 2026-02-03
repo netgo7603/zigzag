@@ -2,7 +2,7 @@ import { Food } from '../types/game';
 import { GAME_CONFIG, FOOD_COLORS } from './constants';
 import { generateId, randomRange, randomChoice } from './utils';
 
-export function createFood(worldWidth: number, worldHeight: number): Food {
+export function createFood(worldWidth: number, worldHeight: number, canBeTimeItem: boolean = true): Food {
   const margin = 50;
   const radius = randomRange(GAME_CONFIG.FOOD_MIN_RADIUS, GAME_CONFIG.FOOD_MAX_RADIUS);
 
@@ -13,6 +13,7 @@ export function createFood(worldWidth: number, worldHeight: number): Food {
     radius,
     color: randomChoice(FOOD_COLORS),
     value: Math.ceil(radius / 2),
+    type: canBeTimeItem && Math.random() < (GAME_CONFIG as any).TIME_ITEM_CHANCE ? 'time' : 'normal',
   };
 }
 
@@ -45,5 +46,6 @@ export function spawnFoodNearPosition(
     radius: randomRange(GAME_CONFIG.FOOD_MIN_RADIUS, GAME_CONFIG.FOOD_MAX_RADIUS),
     color: randomChoice(FOOD_COLORS),
     value: GAME_CONFIG.FOOD_VALUE,
+    type: 'normal',
   };
 }

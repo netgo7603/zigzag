@@ -127,25 +127,42 @@ export class Renderer {
       const screen = this.worldToScreen(food.x, food.y);
 
       if (screen.x < -margin || screen.x > width + margin ||
-          screen.y < -margin || screen.y > height + margin) {
+        screen.y < -margin || screen.y > height + margin) {
         continue;
       }
 
-      this.ctx.shadowColor = food.color;
-      this.ctx.shadowBlur = 15;
+      const isTimeItem = food.type === 'time';
+      const color = isTimeItem ? '#22d3ee' : food.color;
+      const visualRadius = food.radius * (isTimeItem ? 3 : 1.5);
+
+      this.ctx.shadowColor = color;
+      this.ctx.shadowBlur = isTimeItem ? 35 : 15;
 
       const gradient = this.ctx.createRadialGradient(
         screen.x, screen.y, 0,
-        screen.x, screen.y, food.radius * 1.5
+        screen.x, screen.y, visualRadius
       );
       gradient.addColorStop(0, '#ffffff');
-      gradient.addColorStop(0.3, food.color);
+      gradient.addColorStop(0.3, color);
       gradient.addColorStop(1, 'transparent');
 
       this.ctx.fillStyle = gradient;
       this.ctx.beginPath();
-      this.ctx.arc(screen.x, screen.y, food.radius * 1.5, 0, Math.PI * 2);
+      this.ctx.arc(screen.x, screen.y, visualRadius, 0, Math.PI * 2);
       this.ctx.fill();
+
+      // 시간 아이템이면 시계 아이콘 같은 표시 추가
+      if (isTimeItem) {
+        this.ctx.strokeStyle = '#ffffff';
+        this.ctx.lineWidth = 3;
+        this.ctx.beginPath();
+        this.ctx.arc(screen.x, screen.y, food.radius * 1.2, 0, Math.PI * 2);
+        this.ctx.moveTo(screen.x, screen.y);
+        this.ctx.lineTo(screen.x, screen.y - food.radius * 0.8);
+        this.ctx.moveTo(screen.x, screen.y);
+        this.ctx.lineTo(screen.x + food.radius * 0.6, screen.y);
+        this.ctx.stroke();
+      }
 
       this.ctx.shadowBlur = 0;
     }
@@ -158,7 +175,7 @@ export class Renderer {
       const screen = this.worldToScreen(bomb.x, bomb.y);
 
       if (screen.x < -margin || screen.x > width + margin ||
-          screen.y < -margin || screen.y > height + margin) {
+        screen.y < -margin || screen.y > height + margin) {
         continue;
       }
 
@@ -208,7 +225,7 @@ export class Renderer {
       const screen = this.worldToScreen(p.x, p.y);
 
       if (screen.x < -margin || screen.x > width + margin ||
-          screen.y < -margin || screen.y > height + margin) {
+        screen.y < -margin || screen.y > height + margin) {
         continue;
       }
 
@@ -366,7 +383,7 @@ export class Renderer {
       const screen = this.worldToScreen(ft.x, ft.y);
 
       if (screen.x < -50 || screen.x > width + 50 ||
-          screen.y < -50 || screen.y > height + 50) {
+        screen.y < -50 || screen.y > height + 50) {
         continue;
       }
 
@@ -383,6 +400,20 @@ export class Renderer {
   }
 
   private drawHUD(state: GameState, width: number, height: number): void {
+    // 시간 (중앙 상단)
+    const timeLeft = Math.ceil(state.timeLeft);
+    const minutes = Math.floor(timeLeft / 60);
+    const seconds = String(timeLeft % 60).padStart(2, '0');
+
+    this.ctx.save();
+    this.ctx.textAlign = 'center';
+    this.ctx.shadowColor = timeLeft <= 10 ? '#ef4444' : '#fbbf24';
+    this.ctx.shadowBlur = 15;
+    this.ctx.fillStyle = timeLeft <= 10 ? '#ef4444' : '#fbbf24';
+    this.ctx.font = 'bold 36px Arial';
+    this.ctx.fillText(`${minutes}:${seconds}`, width / 2, 50);
+    this.ctx.restore();
+
     // 점수 패널 배경
     this.ctx.fillStyle = 'rgba(0, 0, 0, 0.5)';
     this.ctx.beginPath();

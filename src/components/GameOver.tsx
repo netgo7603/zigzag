@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { formatScore } from '../game/utils';
 import { saveScore, getTopScores, getScoreRank, LeaderboardEntry } from '../lib/leaderboard';
 
@@ -13,9 +13,13 @@ export function GameOver({ score, length, playerName, onRestart }: GameOverProps
   const [leaderboard, setLeaderboard] = useState<LeaderboardEntry[]>([]);
   const [myRank, setMyRank] = useState<number>(0);
   const [isLoading, setIsLoading] = useState(true);
+  const hasSubmitted = useRef(false);
 
   useEffect(() => {
     const submitScore = async () => {
+      if (hasSubmitted.current) return;
+      hasSubmitted.current = true;
+
       setIsLoading(true);
 
       // 점수 저장
@@ -118,11 +122,10 @@ export function GameOver({ score, length, playerName, onRestart }: GameOverProps
                   {leaderboard.map((entry, index) => (
                     <div
                       key={entry.id || index}
-                      className={`flex items-center gap-3 p-3 rounded-xl transition-all ${
-                        entry.nickname === playerName && entry.score === score
+                      className={`flex items-center gap-3 p-3 rounded-xl transition-all ${entry.nickname === playerName && entry.score === score
                           ? 'bg-cyan-500/20 border border-cyan-500/30'
                           : 'bg-white/[0.03] border border-white/5 hover:bg-white/[0.05]'
-                      }`}
+                        }`}
                     >
                       {/* 순위 */}
                       <div className="w-8 h-8 flex items-center justify-center">

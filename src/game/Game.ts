@@ -43,6 +43,7 @@ export class Game {
       maxPauseCount: 3,
       worldWidth: GAME_CONFIG.WORLD_WIDTH,
       worldHeight: GAME_CONFIG.WORLD_HEIGHT,
+      timeLeft: GAME_CONFIG.INITIAL_TIME,
     };
   }
 
@@ -184,6 +185,14 @@ export class Game {
       return;
     }
 
+    // 시간 감소
+    this.state.timeLeft -= 1 / 60; // 초당 60회 업데이트 기준
+    if (this.state.timeLeft <= 0) {
+      this.state.timeLeft = 0;
+      this.state.gameOver = true;
+      return;
+    }
+
     if (checkSelfCollision(snake)) {
       snake.alive = false;
       this.state.gameOver = true;
@@ -231,8 +240,14 @@ export class Game {
         food.x, food.y, food.radius
       )) {
         eatenFoodIds.add(food.id);
-        growSnake(this.state.snake, food.value);
-        this.addFloatingText(food.x, food.y, `+${food.value}`, '#4ade80');
+
+        if (food.type === 'time') {
+          this.state.timeLeft += GAME_CONFIG.TIME_ITEM_INCREMENT;
+          this.addFloatingText(food.x, food.y, `+${GAME_CONFIG.TIME_ITEM_INCREMENT}s`, '#00d4ff');
+        } else {
+          growSnake(this.state.snake, food.value);
+          this.addFloatingText(food.x, food.y, `+${food.value}`, '#4ade80');
+        }
       }
     }
 
@@ -318,10 +333,16 @@ export class Game {
   }
 
   private maintainFoodCount(): void {
-    const deficit = GAME_CONFIG.FOOD_COUNT - this.state.foods.length;
+    const currentFoodCount = this.state.foods.length;
+    const currentTimeItemCount = this.state.foods.filter(f => f.type === 'time').length;
+
+    const deficit = GAME_CONFIG.FOOD_COUNT - currentFoodCount;
+    const maxTimeItems = (GAME_CONFIG as any).MAX_TIME_ITEMS || 5;
+
     for (let i = 0; i < deficit; i++) {
+      const canCreateTimeItem = (currentTimeItemCount + i) < maxTimeItems;
       this.state.foods.push(
-        createFood(this.state.worldWidth, this.state.worldHeight)
+        createFood(this.state.worldWidth, this.state.worldHeight, canCreateTimeItem)
       );
     }
   }

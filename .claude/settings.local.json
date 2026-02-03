@@ -4,7 +4,8 @@
       "Bash(npm create:*)",
       "Bash(npm init:*)",
       "Bash(timeout:*)",
-      "Bash(npm run preview:*)"
+      "Bash(npm run preview:*)",
+      "Bash(git pull:*)"
     ]
   }
 }

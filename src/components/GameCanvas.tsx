@@ -18,6 +18,7 @@ export function GameCanvas() {
   const [finalLength, setFinalLength] = useState(0);
   const [currentScore, setCurrentScore] = useState(0);
   const [currentLength, setCurrentLength] = useState(0);
+  const [currentRemainingTime, setCurrentRemainingTime] = useState(120);
   const [isMobile, setIsMobile] = useState(false);
   const [isPaused, setIsPaused] = useState(false);
 
@@ -50,6 +51,7 @@ export function GameCanvas() {
       setIsPaused(state.paused);
       setCurrentScore(state.snake.score);
       setCurrentLength(state.snake.segments.length);
+      setCurrentRemainingTime(Math.ceil(state.timeLeft));
 
       if (state.gameOver && screen !== 'gameover') {
         setFinalScore(state.snake.score);
@@ -184,7 +186,7 @@ export function GameCanvas() {
         <div className="absolute top-0 left-0 right-0 p-4 safe-area-top">
           <div className="flex items-center gap-3">
             {/* 점수판 */}
-            <div className="flex-1 flex items-center gap-4 px-5 py-3 rounded-2xl bg-[#161b22]/90 backdrop-blur-md border border-[#30363d]/50">
+            <div className="flex items-center gap-4 px-5 py-3 rounded-2xl bg-[#161b22]/90 backdrop-blur-md border border-[#30363d]/50">
               <div className="flex items-center gap-2">
                 <span className="text-xl">🏆</span>
                 <span className="text-xl font-bold text-white">{currentScore}</span>
@@ -206,6 +208,13 @@ export function GameCanvas() {
             >
               ⏸
             </button>
+          </div>
+
+          {/* 중앙 타이머 (모바일 전용) */}
+          <div className="absolute top-20 left-1/2 -translate-x-1/2 px-6 py-2 rounded-full bg-black/40 backdrop-blur-sm border border-white/10">
+            <span className={`text-2xl font-black ${currentRemainingTime <= 10 ? 'text-red-500 animate-pulse' : 'text-yellow-400'}`}>
+              {Math.floor(currentRemainingTime / 60)}:{String(currentRemainingTime % 60).padStart(2, '0')}
+            </span>
           </div>
         </div>
       )}

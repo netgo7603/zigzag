@@ -7,8 +7,8 @@ export const GAME_CONFIG = {
   // 지렁이 설정
   SNAKE_INITIAL_LENGTH: 10,
   SNAKE_SEGMENT_RADIUS: 12,
-  SNAKE_BASE_SPEED: 3,
-  SNAKE_BOOST_SPEED: 6,
+  SNAKE_BASE_SPEED: 10,
+  SNAKE_BOOST_SPEED: 15,
   SNAKE_TURN_SPEED: 0.08,
   SNAKE_SEGMENT_DISTANCE: 8,
 
@@ -19,9 +19,15 @@ export const GAME_CONFIG = {
   FOOD_VALUE: 1,
 
   // 폭탄 설정
-  BOMB_COUNT: 30,
+  BOMB_COUNT: 40,
   BOMB_RADIUS: 12,
-  BOMB_DAMAGE: 5, // 꼬리 5칸 감소
+  BOMB_DAMAGE: 15, // 꼬리 15칸 감소
+
+  // 시간 설정
+  INITIAL_TIME: 30, // 30초
+  TIME_ITEM_INCREMENT: 10, // 10초 증가
+  TIME_ITEM_CHANCE: 0.05, // 5% 확률로 시간 아이템 생성
+  MAX_TIME_ITEMS: 10, // 시간 아이템 최대 10개
 
   // 부스터 설정
   BOOST_COST: 0.5,
