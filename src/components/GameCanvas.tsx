@@ -10,7 +10,9 @@ export function GameCanvas() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const gameRef = useRef<Game | null>(null);
   const rendererRef = useRef<Renderer | null>(null);
-  const [playerName, setPlayerName] = useState<string>('플레이어');
+  const [playerName, setPlayerName] = useState<string>(() => {
+    return localStorage.getItem('zigzag_player_name') || '플레이어';
+  });
   const profileImageRef = useRef<string | undefined>(undefined);
 
   const [screen, setScreen] = useState<GameScreen>('start');
@@ -160,6 +162,7 @@ export function GameCanvas() {
   // 게임 시작
   const handleStart = useCallback((name: string, profileImage?: string) => {
     setPlayerName(name);
+    localStorage.setItem('zigzag_player_name', name);
     profileImageRef.current = profileImage;
     if (gameRef.current) {
       gameRef.current.start(name, profileImage);
@@ -297,7 +300,7 @@ export function GameCanvas() {
       )}
 
       {screen === 'start' && (
-        <StartScreen onStart={handleStart} />
+        <StartScreen onStart={handleStart} initialPlayerName={playerName} />
       )}
 
       {screen === 'gameover' && (

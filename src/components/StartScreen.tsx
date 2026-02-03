@@ -2,10 +2,11 @@ import { useState, useEffect, useRef } from 'react';
 
 interface StartScreenProps {
   onStart: (playerName: string, profileImage?: string) => void;
+  initialPlayerName?: string;
 }
 
-export function StartScreen({ onStart }: StartScreenProps) {
-  const [playerName, setPlayerName] = useState('');
+export function StartScreen({ onStart, initialPlayerName = '' }: StartScreenProps) {
+  const [playerName, setPlayerName] = useState(initialPlayerName === '플레이어' ? '' : initialPlayerName);
   const [profileImage, setProfileImage] = useState<string | undefined>();
   const [isLoaded, setIsLoaded] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
