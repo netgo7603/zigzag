@@ -231,11 +231,11 @@ export function GameCanvas() {
             </div>
           </div>
 
-          {/* 모바일 미니맵 (우측 하단) */}
-          <div className="absolute bottom-8 right-8 w-28 h-28 rounded-2xl bg-black/40 backdrop-blur-md border border-white/10 shadow-2xl overflow-hidden pointer-events-none">
+          {/* 모바일 미니맵 (우측 상단 배치) */}
+          <div className="absolute top-4 right-4 w-24 h-24 rounded-2xl bg-black/40 backdrop-blur-md border border-white/10 shadow-2xl overflow-hidden pointer-events-none">
             {/* 플레이어 위치 마커 */}
             <div
-              className="absolute w-2.5 h-2.5 rounded-full bg-cyan-400 shadow-[0_0_10px_rgba(34,211,238,1)] animate-pulse"
+              className="absolute w-2 h-2 rounded-full bg-cyan-400 shadow-[0_0_8px_rgba(34,211,238,1)] animate-pulse"
               style={{
                 left: `${(currentPos.x / 3000) * 100}%`,
                 top: `${(currentPos.y / 3000) * 100}%`,
