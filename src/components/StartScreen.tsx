@@ -162,60 +162,32 @@ export function StartScreen({ onStart }: StartScreenProps) {
               </button>
             </form>
 
-            {/* 조작 가이드 */}
-            <div className="mt-8 pt-6 border-t border-white/5">
+            {/* 친구 초대용 QR 코드 */}
+            <div className="mt-8 pt-6 border-t border-white/5 flex flex-col items-center">
               <div className="flex items-center gap-2 mb-4">
-                <div className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse" />
-                <span className="text-white/50 text-xs font-semibold uppercase tracking-wider">How to Play</span>
+                <div className="w-1.5 h-1.5 rounded-full bg-fuchsia-400 animate-pulse" />
+                <span className="text-white/50 text-xs font-semibold uppercase tracking-wider">Play with Friends</span>
               </div>
 
-              <div className="grid grid-cols-2 gap-3">
-                {isMobile ? (
-                  <>
-                    <div className="flex items-center gap-3 p-3 rounded-xl bg-white/[0.03] border border-white/5">
-                      <div className="w-8 h-8 rounded-lg bg-cyan-500/10 flex items-center justify-center">
-                        <span className="text-cyan-400 text-sm">+</span>
-                      </div>
-                      <span className="text-white/40 text-xs">터치로 이동</span>
+              <div className="group relative">
+                <div className="absolute -inset-2 bg-gradient-to-r from-cyan-500/20 via-violet-500/20 to-fuchsia-500/20 rounded-2xl blur-xl opacity-0 group-hover:opacity-100 transition-all duration-700" />
+                <div className="relative p-3 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-sm transition-all duration-500 group-hover:bg-white/[0.08] group-hover:border-white/20 group-hover:scale-[1.05]">
+                  <img
+                    src="/qr.png"
+                    alt="Game QR Code"
+                    className="w-32 h-32 rounded-lg grayscale group-hover:grayscale-0 transition-all duration-500"
+                  />
+                  {/* 스캔 유도 오버레이 */}
+                  <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                    <div className="px-3 py-1.5 rounded-full bg-black/60 backdrop-blur-md border border-white/20 shadow-2xl">
+                      <span className="text-[10px] text-white font-bold tracking-tighter uppercase">Scan to Join</span>
                     </div>
-                    <div className="flex items-center gap-3 p-3 rounded-xl bg-white/[0.03] border border-white/5">
-                      <div className="w-8 h-8 rounded-lg bg-violet-500/10 flex items-center justify-center">
-                        <span className="text-violet-400 text-sm">++</span>
-                      </div>
-                      <span className="text-white/40 text-xs">롱터치 부스터</span>
-                    </div>
-                  </>
-                ) : (
-                  <>
-                    <div className="flex items-center gap-3 p-3 rounded-xl bg-white/[0.03] border border-white/5">
-                      <div className="w-8 h-8 rounded-lg bg-cyan-500/10 flex items-center justify-center">
-                        <svg className="w-4 h-4 text-cyan-400" fill="currentColor" viewBox="0 0 24 24">
-                          <path d="M13.5 3C9.916 3 7 5.916 7 9.5c0 1.54.565 2.944 1.487 4.046l-.017.017-4.363 4.363a.5.5 0 00.707.707l4.363-4.363.017-.017A6.465 6.465 0 0013.5 16c3.584 0 6.5-2.916 6.5-6.5S17.084 3 13.5 3z" />
-                        </svg>
-                      </div>
-                      <span className="text-white/40 text-xs">마우스 이동</span>
-                    </div>
-                    <div className="flex items-center gap-3 p-3 rounded-xl bg-white/[0.03] border border-white/5">
-                      <div className="w-8 h-8 rounded-lg bg-violet-500/10 flex items-center justify-center text-violet-400 text-[10px] font-bold">
-                        SPC
-                      </div>
-                      <span className="text-white/40 text-xs">부스터</span>
-                    </div>
-                  </>
-                )}
-                <div className="flex items-center gap-3 p-3 rounded-xl bg-white/[0.03] border border-white/5">
-                  <div className="w-8 h-8 rounded-lg bg-emerald-500/10 flex items-center justify-center">
-                    <div className="w-2.5 h-2.5 rounded-full bg-emerald-400" />
                   </div>
-                  <span className="text-white/40 text-xs">먹이 수집</span>
-                </div>
-                <div className="flex items-center gap-3 p-3 rounded-xl bg-white/[0.03] border border-white/5">
-                  <div className="w-8 h-8 rounded-lg bg-red-500/10 flex items-center justify-center">
-                    <div className="w-2.5 h-2.5 rounded bg-red-400 rotate-45" />
-                  </div>
-                  <span className="text-white/40 text-xs">폭탄 회피</span>
                 </div>
               </div>
+              <p className="mt-3 text-white/30 text-[10px] text-center font-medium leading-relaxed">
+                친구에게 QR 코드를 보여주세요!<br />함께라면 더 즐거워요.
+              </p>
             </div>
           </div>
         </div>
