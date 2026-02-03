@@ -220,20 +220,28 @@ export function GameCanvas() {
           </div>
 
           {/* 중앙 타이머 (모바일 전용) */}
-          <div className="absolute top-20 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1">
+          <div className="absolute top-20 left-1/2 -translate-x-1/2">
             <div className="px-6 py-2 rounded-full bg-black/40 backdrop-blur-sm border border-white/10">
               <span className={`text-2xl font-black ${currentRemainingTime <= 10 ? 'text-red-500 animate-pulse' : 'text-yellow-400'}`}>
                 {Math.floor(currentRemainingTime / 60)}:{String(currentRemainingTime % 60).padStart(2, '0')}
               </span>
             </div>
+          </div>
 
-            {/* 현재 좌표 표시 */}
-            <div className="px-3 py-1 rounded-lg bg-black/30 backdrop-blur-[2px] border border-white/5 flex items-center gap-2">
-              <span className="text-[10px] font-bold text-white/40 uppercase tracking-tighter">POS</span>
-              <span className="text-xs font-mono font-medium text-cyan-400/80">
-                {currentPos.x}, {currentPos.y}
-              </span>
-            </div>
+          {/* 모바일 미니맵 (우측 하단) */}
+          <div className="absolute bottom-8 right-8 w-28 h-28 rounded-2xl bg-black/40 backdrop-blur-md border border-white/10 shadow-2xl overflow-hidden pointer-events-none">
+            {/* 플레이어 위치 마커 */}
+            <div
+              className="absolute w-2.5 h-2.5 rounded-full bg-cyan-400 shadow-[0_0_10px_rgba(34,211,238,1)] animate-pulse"
+              style={{
+                left: `${(currentPos.x / 3000) * 100}%`,
+                top: `${(currentPos.y / 3000) * 100}%`,
+                transform: 'translate(-50%, -50%)',
+                transition: 'all 0.1s linear'
+              }}
+            />
+            {/* 미니맵 장식 라인 */}
+            <div className="absolute inset-0 border border-white/5 pointer-events-none" />
           </div>
         </div>
       )}
