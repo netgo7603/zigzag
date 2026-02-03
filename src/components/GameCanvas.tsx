@@ -10,7 +10,7 @@ export function GameCanvas() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const gameRef = useRef<Game | null>(null);
   const rendererRef = useRef<Renderer | null>(null);
-  const playerNameRef = useRef<string>('플레이어');
+  const [playerName, setPlayerName] = useState<string>('플레이어');
   const profileImageRef = useRef<string | undefined>(undefined);
 
   const [screen, setScreen] = useState<GameScreen>('start');
@@ -147,11 +147,11 @@ export function GameCanvas() {
   }, []);
 
   // 게임 시작
-  const handleStart = useCallback((playerName: string, profileImage?: string) => {
-    playerNameRef.current = playerName;
+  const handleStart = useCallback((name: string, profileImage?: string) => {
+    setPlayerName(name);
     profileImageRef.current = profileImage;
     if (gameRef.current) {
-      gameRef.current.start(playerName, profileImage);
+      gameRef.current.start(name, profileImage);
       setScreen('playing');
     }
   }, []);
@@ -159,10 +159,10 @@ export function GameCanvas() {
   // 게임 재시작
   const handleRestart = useCallback(() => {
     if (gameRef.current) {
-      gameRef.current.restart(playerNameRef.current, profileImageRef.current);
+      gameRef.current.restart(playerName, profileImageRef.current);
       setScreen('playing');
     }
-  }, []);
+  }, [playerName]);
 
   // 일시정지 토글
   const handlePause = useCallback(() => {
@@ -268,6 +268,7 @@ export function GameCanvas() {
         <GameOver
           score={finalScore}
           length={finalLength}
+          playerName={playerName}
           onRestart={handleRestart}
         />
       )}

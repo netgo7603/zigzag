@@ -8,23 +8,23 @@ export function StartScreen({ onStart }: StartScreenProps) {
   const [playerName, setPlayerName] = useState('');
   const [profileImage, setProfileImage] = useState<string | undefined>();
   const [isMobile, setIsMobile] = useState(false);
+  const [isLoaded, setIsLoaded] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     setIsMobile('ontouchstart' in window);
+    setTimeout(() => setIsLoaded(true), 100);
   }, []);
 
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
 
-    // 이미지 파일만 허용
     if (!file.type.startsWith('image/')) {
       alert('이미지 파일만 업로드할 수 있습니다.');
       return;
     }
 
-    // 파일 크기 제한 (2MB)
     if (file.size > 2 * 1024 * 1024) {
       alert('파일 크기는 2MB 이하여야 합니다.');
       return;
@@ -44,103 +44,165 @@ export function StartScreen({ onStart }: StartScreenProps) {
   };
 
   return (
-    <div className="fixed inset-0 flex flex-col items-center justify-end bg-[#0d1117] overflow-y-auto px-10 pb-5 sm:pb-8">
-      {/* 배경 그라데이션 효과 - 시각적 깊이감 추가 */}
-      <div className="fixed inset-0 bg-gradient-to-br from-cyan-500/15 via-transparent to-purple-500/15 pointer-events-none" />
-      <div className="fixed inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(0,196,255,0.05),transparent_70%)] pointer-events-none" />
+    <div className="fixed inset-0 flex items-center justify-center bg-[#030712] overflow-hidden">
+      {/* 애니메이션 배경 */}
+      <div className="absolute inset-0 overflow-hidden">
+        <div className="absolute -top-1/2 -left-1/2 w-full h-full bg-gradient-to-br from-violet-600/20 to-transparent rounded-full blur-3xl animate-pulse" />
+        <div className="absolute -bottom-1/2 -right-1/2 w-full h-full bg-gradient-to-tl from-cyan-500/20 to-transparent rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }} />
+        <div className="absolute top-1/4 right-1/4 w-96 h-96 bg-gradient-to-br from-fuchsia-500/10 to-transparent rounded-full blur-3xl animate-pulse" style={{ animationDelay: '2s' }} />
+      </div>
 
-      <div className="relative w-full max-w-[310px] sm:max-w-sm">
-        <div className="relative text-center p-8 sm:p-10 rounded-[2rem] bg-[#161b22]/95 backdrop-blur-3xl border border-[#3c444d]/50 shadow-[0_0_50px_-12px_rgba(0,0,0,0.5)] flex flex-col gap-6">
+      {/* 그리드 패턴 오버레이 */}
+      <div
+        className="absolute inset-0 opacity-[0.02]"
+        style={{
+          backgroundImage: `linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px)`,
+          backgroundSize: '50px 50px'
+        }}
+      />
 
-          {/* 로고 영역 - 간격 확대 */}
-          <div className="space-y-3">
-            <h1 className="text-6xl sm:text-7xl font-black tracking-tighter">
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-500 drop-shadow-sm">
-                ZigZag
-              </span>
-            </h1>
-            <p className="text-[#8b949e] text-xl font-medium tracking-wide">지렁이 서바이벌</p>
-          </div>
+      {/* 메인 카드 */}
+      <div className={`relative w-full max-w-md mx-4 transition-all duration-700 ${isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
+        <div className="relative rounded-3xl bg-gradient-to-b from-white/[0.08] to-white/[0.02] backdrop-blur-2xl border border-white/10 shadow-2xl shadow-black/50 overflow-hidden">
+          {/* 카드 상단 글로우 */}
+          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-3/4 h-px bg-gradient-to-r from-transparent via-white/50 to-transparent" />
 
-          {/* 프로필 & 닉네임 입력 폼 */}
-          <form onSubmit={handleSubmit} className="flex flex-col gap-8">
-            {/* 프로필 사진 업로드 */}
-            <div className="flex flex-col items-center gap-4">
-              <div
-                onClick={() => fileInputRef.current?.click()}
-                className="group relative w-24 h-24 rounded-full bg-[#0d1117] border-2 border-dashed border-[#30363d]
-                         flex items-center justify-center cursor-pointer overflow-hidden
-                         hover:border-cyan-500 transition-all duration-300"
-              >
-                {profileImage ? (
-                  <img src={profileImage} alt="프로필" className="w-full h-full object-cover transition-transform group-hover:scale-110" />
-                ) : (
-                  <div className="text-center group-hover:scale-110 transition-transform">
-                    <span className="text-3xl">📷</span>
-                    <p className="text-[10px] text-[#484f58] mt-1 uppercase tracking-tighter">Photo</p>
-                  </div>
-                )}
-                {/* 호버 효과 블러 */}
-                <div className="absolute inset-0 bg-cyan-500/0 group-hover:bg-cyan-500/10 transition-colors" />
+          <div className="p-8 sm:p-10">
+            {/* 로고 */}
+            <div className="text-center mb-8">
+              <div className="inline-block">
+                <h1 className="text-5xl sm:text-6xl font-black tracking-tight mb-2">
+                  <span className="bg-gradient-to-r from-cyan-400 via-violet-400 to-fuchsia-400 bg-clip-text text-transparent">
+                    ZigZag
+                  </span>
+                </h1>
+                <div className="h-1 w-full bg-gradient-to-r from-cyan-400 via-violet-400 to-fuchsia-400 rounded-full opacity-60" />
               </div>
-              <input
-                ref={fileInputRef}
-                type="file"
-                accept="image/*"
-                onChange={handleImageUpload}
-                className="hidden"
-              />
-              <p className="text-[#8b949e] text-sm font-medium">나만의 프로필</p>
+              <p className="text-white/40 text-sm font-medium tracking-widest uppercase mt-4">Survival Game</p>
             </div>
 
-            {/* 닉네임 입력 */}
-            <div className="space-y-2">
-              <input
-                type="text"
-                value={playerName}
-                onChange={(e) => setPlayerName(e.target.value)}
-                placeholder="닉네임 입력"
-                maxLength={15}
-                className="w-full px-6 py-5 rounded-2xl bg-[#0d1117] border border-[#30363d]
-                         text-white placeholder-[#484f58] focus:outline-none focus:border-cyan-500/50 focus:ring-4 focus:ring-cyan-500/10
-                         text-center text-xl transition-all duration-300 shadow-inner"
-              />
-            </div>
+            <form onSubmit={handleSubmit} className="space-y-6">
+              {/* 프로필 업로드 */}
+              <div className="flex justify-center">
+                <div
+                  onClick={() => fileInputRef.current?.click()}
+                  className="group relative cursor-pointer"
+                >
+                  <div className="absolute -inset-1 bg-gradient-to-r from-cyan-500 via-violet-500 to-fuchsia-500 rounded-full opacity-0 group-hover:opacity-70 blur transition-all duration-500" />
+                  <div className="relative w-24 h-24 rounded-full bg-white/5 border-2 border-white/10 flex items-center justify-center overflow-hidden transition-all duration-300 group-hover:border-white/30 group-hover:scale-105">
+                    {profileImage ? (
+                      <img src={profileImage} alt="프로필" className="w-full h-full object-cover" />
+                    ) : (
+                      <div className="flex flex-col items-center gap-1 text-white/30 group-hover:text-white/60 transition-colors">
+                        <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                        </svg>
+                        <span className="text-[10px] font-medium uppercase tracking-wider">Avatar</span>
+                      </div>
+                    )}
+                  </div>
+                  {/* 플러스 아이콘 */}
+                  <div className="absolute -bottom-1 -right-1 w-7 h-7 bg-gradient-to-r from-cyan-500 to-violet-500 rounded-full flex items-center justify-center shadow-lg shadow-cyan-500/30 group-hover:scale-110 transition-transform">
+                    <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+                    </svg>
+                  </div>
+                </div>
+                <input
+                  ref={fileInputRef}
+                  type="file"
+                  accept="image/*"
+                  onChange={handleImageUpload}
+                  className="hidden"
+                />
+              </div>
 
-            <button
-              type="submit"
-              className="w-full py-5 rounded-2xl bg-gradient-to-r from-cyan-500 to-blue-600
-                       text-white font-black text-2xl shadow-lg shadow-cyan-500/20
-                       hover:from-cyan-400 hover:to-blue-500 hover:shadow-cyan-500/40
-                       transition-all duration-300 transform hover:-translate-y-1 active:translate-y-0"
-            >
-              게임 시작
-            </button>
-          </form>
+              {/* 닉네임 입력 */}
+              <div className="relative group">
+                <div className="absolute -inset-0.5 bg-gradient-to-r from-cyan-500/50 to-violet-500/50 rounded-2xl opacity-0 group-focus-within:opacity-100 blur transition-all duration-300" />
+                <input
+                  type="text"
+                  value={playerName}
+                  onChange={(e) => setPlayerName(e.target.value)}
+                  placeholder="닉네임을 입력하세요"
+                  maxLength={15}
+                  className="relative w-full px-5 py-4 rounded-xl bg-white/5 border border-white/10
+                           text-white placeholder-white/25 text-center text-lg font-medium
+                           focus:outline-none focus:border-white/20 focus:bg-white/[0.07]
+                           transition-all duration-300"
+                />
+              </div>
 
-          {/* 조작 안내 - 디자인 세분화 */}
-          <div className="pt-8 border-t border-[#30363d]/50">
-            <div className="bg-[#0d1117]/50 rounded-2xl p-6 text-left space-y-4">
-              <p className="font-bold text-white text-base flex items-center gap-3">
-                <span className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse"></span>
-                플레이 가이드
-              </p>
+              {/* 시작 버튼 */}
+              <button
+                type="submit"
+                className="group relative w-full py-4 rounded-xl overflow-hidden transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]"
+              >
+                <div className="absolute inset-0 bg-gradient-to-r from-cyan-500 via-violet-500 to-fuchsia-500" />
+                <div className="absolute inset-0 bg-gradient-to-r from-cyan-400 via-violet-400 to-fuchsia-400 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_-20%,rgba(255,255,255,0.3),transparent_70%)]" />
+                <span className="relative text-white font-bold text-lg tracking-wide flex items-center justify-center gap-2">
+                  게임 시작
+                  <svg className="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                  </svg>
+                </span>
+              </button>
+            </form>
 
-              <div className="text-[#8b949e] text-[0.9rem] leading-relaxed space-y-2">
+            {/* 조작 가이드 */}
+            <div className="mt-8 pt-6 border-t border-white/5">
+              <div className="flex items-center gap-2 mb-4">
+                <div className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse" />
+                <span className="text-white/50 text-xs font-semibold uppercase tracking-wider">How to Play</span>
+              </div>
+
+              <div className="grid grid-cols-2 gap-3">
                 {isMobile ? (
                   <>
-                    <p className="flex items-center gap-2"><span className="text-cyan-500">☝</span> 터치로 자유롭게 이동</p>
-                    <p className="flex items-center gap-2"><span className="text-cyan-500">🔥</span> 롱 터치로 부스터 활성화</p>
+                    <div className="flex items-center gap-3 p-3 rounded-xl bg-white/[0.03] border border-white/5">
+                      <div className="w-8 h-8 rounded-lg bg-cyan-500/10 flex items-center justify-center">
+                        <span className="text-cyan-400 text-sm">+</span>
+                      </div>
+                      <span className="text-white/40 text-xs">터치로 이동</span>
+                    </div>
+                    <div className="flex items-center gap-3 p-3 rounded-xl bg-white/[0.03] border border-white/5">
+                      <div className="w-8 h-8 rounded-lg bg-violet-500/10 flex items-center justify-center">
+                        <span className="text-violet-400 text-sm">++</span>
+                      </div>
+                      <span className="text-white/40 text-xs">롱터치 부스터</span>
+                    </div>
                   </>
                 ) : (
                   <>
-                    <p className="flex items-center gap-2"><span className="text-cyan-500">🖱</span> 마우스 방향으로 이동</p>
-                    <p className="flex items-center gap-2"><span className="text-cyan-500">⌨</span> <span className="bg-[#30363d] px-2 py-0.5 rounded text-xs text-white">SPACE</span> 부스터 사용</p>
+                    <div className="flex items-center gap-3 p-3 rounded-xl bg-white/[0.03] border border-white/5">
+                      <div className="w-8 h-8 rounded-lg bg-cyan-500/10 flex items-center justify-center">
+                        <svg className="w-4 h-4 text-cyan-400" fill="currentColor" viewBox="0 0 24 24">
+                          <path d="M13.5 3C9.916 3 7 5.916 7 9.5c0 1.54.565 2.944 1.487 4.046l-.017.017-4.363 4.363a.5.5 0 00.707.707l4.363-4.363.017-.017A6.465 6.465 0 0013.5 16c3.584 0 6.5-2.916 6.5-6.5S17.084 3 13.5 3z"/>
+                        </svg>
+                      </div>
+                      <span className="text-white/40 text-xs">마우스 이동</span>
+                    </div>
+                    <div className="flex items-center gap-3 p-3 rounded-xl bg-white/[0.03] border border-white/5">
+                      <div className="w-8 h-8 rounded-lg bg-violet-500/10 flex items-center justify-center text-violet-400 text-[10px] font-bold">
+                        SPC
+                      </div>
+                      <span className="text-white/40 text-xs">부스터</span>
+                    </div>
                   </>
                 )}
-                <div className="h-px bg-[#30363d]/50 my-2" />
-                <p className="flex items-center gap-2"><span className="text-green-500">✨</span> 먹이를 먹고 몸집 키우기</p>
-                <p className="flex items-center gap-2"><span className="text-red-500">💣</span> 폭탄을 피해 생존하세요!</p>
+                <div className="flex items-center gap-3 p-3 rounded-xl bg-white/[0.03] border border-white/5">
+                  <div className="w-8 h-8 rounded-lg bg-emerald-500/10 flex items-center justify-center">
+                    <div className="w-2.5 h-2.5 rounded-full bg-emerald-400" />
+                  </div>
+                  <span className="text-white/40 text-xs">먹이 수집</span>
+                </div>
+                <div className="flex items-center gap-3 p-3 rounded-xl bg-white/[0.03] border border-white/5">
+                  <div className="w-8 h-8 rounded-lg bg-red-500/10 flex items-center justify-center">
+                    <div className="w-2.5 h-2.5 rounded bg-red-400 rotate-45" />
+                  </div>
+                  <span className="text-white/40 text-xs">폭탄 회피</span>
+                </div>
               </div>
             </div>
           </div>
