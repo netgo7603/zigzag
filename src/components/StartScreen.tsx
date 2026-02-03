@@ -7,12 +7,10 @@ interface StartScreenProps {
 export function StartScreen({ onStart }: StartScreenProps) {
   const [playerName, setPlayerName] = useState('');
   const [profileImage, setProfileImage] = useState<string | undefined>();
-  const [isMobile, setIsMobile] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
-    setIsMobile('ontouchstart' in window);
     setTimeout(() => setIsLoaded(true), 100);
   }, []);
 
@@ -170,17 +168,17 @@ export function StartScreen({ onStart }: StartScreenProps) {
               </div>
 
               <div className="group relative">
-                <div className="absolute -inset-2 bg-gradient-to-r from-cyan-500/20 via-violet-500/20 to-fuchsia-500/20 rounded-2xl blur-xl opacity-0 group-hover:opacity-100 transition-all duration-700" />
-                <div className="relative p-3 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-sm transition-all duration-500 group-hover:bg-white/[0.08] group-hover:border-white/20 group-hover:scale-[1.05]">
+                <div className="absolute -inset-4 bg-gradient-to-r from-cyan-500/30 via-violet-500/30 to-fuchsia-500/30 rounded-3xl blur-2xl opacity-40 group-hover:opacity-100 transition-all duration-700" />
+                <div className="relative p-2 rounded-2xl bg-white shadow-[0_0_30px_rgba(255,255,255,0.1)] transition-all duration-500 group-hover:scale-[1.1] group-hover:shadow-[0_0_40px_rgba(255,255,255,0.2)]">
                   <img
                     src="/qr.png"
                     alt="Game QR Code"
-                    className="w-32 h-32 rounded-lg grayscale group-hover:grayscale-0 transition-all duration-500"
+                    className="w-36 h-36 rounded-lg transition-all duration-500"
                   />
-                  {/* 스캔 유도 오버레이 */}
-                  <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-                    <div className="px-3 py-1.5 rounded-full bg-black/60 backdrop-blur-md border border-white/20 shadow-2xl">
-                      <span className="text-[10px] text-white font-bold tracking-tighter uppercase">Scan to Join</span>
+                  {/* 스캔 유도 뱃지 - QR 코드를 가리지 않도록 하단 배치 */}
+                  <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-all duration-500 translate-y-2 group-hover:translate-y-0">
+                    <div className="px-4 py-1.5 rounded-full bg-gradient-to-r from-cyan-600 to-violet-600 border border-white/20 shadow-xl whitespace-nowrap">
+                      <span className="text-[10px] text-white font-black tracking-widest uppercase">Scan with Camera</span>
                     </div>
                   </div>
                 </div>
