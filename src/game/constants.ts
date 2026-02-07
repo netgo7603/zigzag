@@ -24,8 +24,8 @@ export const GAME_CONFIG = {
   BOMB_DAMAGE: 15, // 꼬리 15칸 감소
 
   // 시간 설정
-  INITIAL_TIME: 30, // 30초
-  TIME_ITEM_INCREMENT: 10, // 10초 증가
+  INITIAL_TIME: 15, // 15초
+  TIME_ITEM_INCREMENT: 3, // 10초 증가
   TIME_ITEM_CHANCE: 0.05, // 5% 확률로 시간 아이템 생성
   MAX_TIME_ITEMS: 10, // 시간 아이템 최대 10개
 
