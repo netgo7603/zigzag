@@ -1,6 +1,7 @@
 import { useEffect, useState, useRef } from 'react';
 import { formatScore } from '../game/utils';
 import { saveScore, getTopScores, getScoreRank, LeaderboardEntry } from '../lib/leaderboard';
+import { AdSenseAd } from './AdSenseAd';
 
 interface GameOverProps {
   score: number;
@@ -123,8 +124,8 @@ export function GameOver({ score, length, playerName, onRestart }: GameOverProps
                     <div
                       key={entry.id || index}
                       className={`flex items-center gap-3 p-3 rounded-xl transition-all ${entry.nickname === playerName && entry.score === score
-                          ? 'bg-cyan-500/20 border border-cyan-500/30'
-                          : 'bg-white/[0.03] border border-white/5 hover:bg-white/[0.05]'
+                        ? 'bg-cyan-500/20 border border-cyan-500/30'
+                        : 'bg-white/[0.03] border border-white/5 hover:bg-white/[0.05]'
                         }`}
                     >
                       {/* 순위 */}
@@ -165,7 +166,7 @@ export function GameOver({ score, length, playerName, onRestart }: GameOverProps
             {/* 다시하기 버튼 */}
             <button
               onClick={onRestart}
-              className="group relative w-full py-4 rounded-xl overflow-hidden transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]"
+              className="group relative w-full py-4 rounded-xl overflow-hidden transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] mb-6"
             >
               <div className="absolute inset-0 bg-gradient-to-r from-cyan-500 via-violet-500 to-fuchsia-500" />
               <div className="absolute inset-0 bg-gradient-to-r from-cyan-400 via-violet-400 to-fuchsia-400 opacity-0 group-hover:opacity-100 transition-opacity" />
@@ -177,6 +178,16 @@ export function GameOver({ score, length, playerName, onRestart }: GameOverProps
                 </svg>
               </span>
             </button>
+
+            {/* 광고 영역 */}
+            <div className="mt-4 rounded-xl overflow-hidden bg-white/5 border border-white/5 min-h-[100px] flex items-center justify-center">
+              <AdSenseAd
+                client="ca-pub-1032715451644664"
+                slot="5712499147"
+                format="auto"
+                responsive="true"
+              />
+            </div>
           </div>
         </div>
       </div>
