@@ -276,7 +276,7 @@ export function GameCanvas() {
             {/* 광고 영역 */}
             <div className="w-full min-h-[250px] mb-6 rounded-2xl bg-[#1c2128] border border-[#30363d] flex items-center justify-center overflow-hidden">
               <AdSense
-                slot="1032715451644664"
+                slot="4131140369"
                 format="rectangle"
                 className="w-full h-full flex items-center justify-center"
               />
